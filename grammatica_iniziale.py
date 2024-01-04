@@ -41,6 +41,24 @@ def t_error(t):
     print(f"Token non riconosciuto: {t.value[0]}")
     t.lexer.skip(1)
 
+def add_parentheses(tokens):
+    new_tokens = []
+    i = 0
+    while i < len(tokens):
+        if tokens[i] == 'and':
+            new_tokens[-1] = '(' + new_tokens[-1]  # inizio and
+            i += 1  # salto l'and
+            new_tokens[-1] = new_tokens[-1] + "and"
+            while i < len(tokens) and tokens[i] != 'or':
+                new_tokens.append(tokens[i])
+                i += 1
+            new_tokens[-1] += ')'  # fine and
+        else:
+            new_tokens.append(tokens[i])
+            i += 1
+
+    return new_tokens
+
 # regole parsing
 def p_start(p):
     '''
@@ -62,11 +80,23 @@ def p_F2(p):
        | f
     '''
 
+    global reconstruted
+
+    if len(p) == 2:
+        p[0] = [p[1]]  # 1 elemento restituisco lista
+    else:
+        p[0] = p[1] + [p[2]] + p[3]  # concateno le liste
+
+    p[0] = add_parentheses(p[0]) # aggiungo le parentesi
+
+    reconstruted = p[0]
+
 def p_F3(p):
     '''
     F3 : f SEMICOLON F3
        | f
     '''
+    p[0] = p[1]
 
 # per errori parsing
 def p_error(p):
@@ -84,8 +114,14 @@ if __name__ == "__main__":
 
     try: # gestire errore
         result = parser.parse(user_input, lexer=lexer)
+
+        concatenated_string = ''.join(reconstruted)
+        # dal parsing poi rimuovo gli apici doppi
+        cleaned_string = concatenated_string.replace("''", "'")
+        print("reeee",cleaned_string)
+
         script_path = "priority.py"
-        subprocess.run(["python", script_path, user_input])
+        subprocess.run(["python", script_path, cleaned_string]) # result
     except Exception as e:
         print(f"Errore durante il parsing: {e}")
 
