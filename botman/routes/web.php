@@ -1,9 +1,7 @@
 <?php
 
+use App\Http\Controllers\GlobalBotController as BotController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\LoginController;
-
-use App\Http\Controllers\MicroserviceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +15,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'auth/login')->name("login");
-Route::post('/loginPost', LoginController::class)->name("loginPost");
-Route::get('/chat', HomeController::class)->name("welcome")->middleware("auth");
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::post('/addMicroservice', [MicroserviceController::class, 'store'])->name("addMicroservice");
+Route::get('/', HomeController::class);
