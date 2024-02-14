@@ -1,6 +1,7 @@
 <script>
     // Example ussage of the fullscreen widget
     const welcomeMessage = "{{ $welcome }}";
+
     const chatServer = "/api/botman";
  
     // Create a new observer instance:

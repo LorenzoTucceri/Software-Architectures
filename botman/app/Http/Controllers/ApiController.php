@@ -48,5 +48,26 @@ class ApiController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+    public function oldChat(Request $request)
+    {
+        try {
+            $input = $request->json()->all();
+
+            // Fai qualcosa con i dati ricevuti, ad esempio salvali nel database
+
+            $response = [
+                'message' => 'Dati ricevuti con successo!',
+                'data' => $input
+            ];
+            $exampleConversation = new ExampleConversation();
+            $exampleConversation->getQuestion("Mammeta");
+
+
+
+            return response()->json($response, 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
 }
