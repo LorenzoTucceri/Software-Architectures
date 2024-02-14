@@ -69,9 +69,10 @@
                 margin-bottom: 10px;
                 margin-top: 0; /* Aggiunto per spostare il titolo più in alto */
             }
+
             .popup-content {
                 background-color: #fff;
-                margin: 10% auto; /* Ridotto margine superiore */
+                margin: 5% auto; /* Ridotto il margine superiore */
                 padding: 20px;
                 border-radius: 10px;
                 width: 60%;
@@ -143,6 +144,34 @@
             th {
                 background-color: #f2f2f2;
             }
+            .microservice-form {
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+            }
+
+            .microservice-form input[type="text"] {
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin-right: 5px;
+            }
+
+            .microservice-form button {
+                padding: 8px 20px;
+                border: none;
+                border-radius: 5px;
+                background-color: #408591;
+                color: #fff;
+                cursor: pointer;
+            }
+
+            .microservice-form button:disabled {
+                background-color: #ccc;
+                cursor: not-allowed;
+            }
+
+
 
         </style>
     </head>
@@ -174,13 +203,19 @@
             <span class="close" onclick="closePopup()">&times;</span>
             <h2>Add Microservices</h2>
             <div class="input-container">
-                <form action="{{ route('addMicroservice') }}" method="POST">
+                <form action="{{ route('addMicroservice') }}" method="POST" class="microservice-form">
                     @csrf
-                  <td> <input type="text" id="microserviceName" placeholder="Add Microservice" name="name"></td>
                     <td>
-                        <button type="submit">Add</button>
+                        <input type="text" id="microserviceName" placeholder="Name" name="name">
+                    </td>
+                    <td>
+                        <input type="text" id="annotation" placeholder="Annotation" name="annotation">
+                    </td>
+                    <td>
+                        <button type="submit" id="addBtn" disabled>Add</button>
                     </td>
                 </form>
+
             </div>
             <table id="microservicesTable">
                 <thead>
@@ -193,7 +228,10 @@
                 @foreach(\App\Models\Microservice::all() as $microservice)
                     <tr>
                         <td>{{ $microservice->name }}</td>
-                        <td><button onclick="deleteMicroservice({{ $microservice->id }})">Delete</button></td>
+                        <form action="{{ route('microservices.delete', $microservice->id) }}" method="POST" id="deleteForm">
+                            @csrf
+                            <td><button type="submit" onclick="return confirmDelete()">Delete</button></td>
+                        </form>
                     </tr>
                 @endforeach
                 </tbody>
@@ -201,24 +239,49 @@
         </div>
     </div>
     </body>
+
     <body class="antialiased">
         @include('bots.chat')
+
+
     </body>
 
 <script>
+
+        function confirmDelete() {
+
+            return confirm('Are you sure you want to delete this microservice?');
+
+            }
     // Funzione per aprire il pop-up
     function openPopup() {
         document.getElementById('popup').style.display = 'block';
-        document.getElementById('chat').style.display = 'none';
-
+        isPopupOpen = true;
     }
 
     // Funzione per chiudere il pop-up
     function closePopup() {
         document.getElementById('popup').style.display = 'none';
-        document.getElementById('chat').style.display = 'block';
+        var isPopupOpen = false;
 
     }
+    document.addEventListener('DOMContentLoaded', function() {
+        const microserviceNameInput = document.getElementById('microserviceName');
+        const annotationInput = document.getElementById('annotation');
+        const addBtn = document.getElementById('addBtn');
+
+        function updateAddBtnState() {
+            if (microserviceNameInput.value.trim() !== '' && annotationInput.value.trim() !== '') {
+                addBtn.disabled = false;
+            } else {
+                addBtn.disabled = true;
+            }
+        }
+
+        microserviceNameInput.addEventListener('input', updateAddBtnState);
+        annotationInput.addEventListener('input', updateAddBtnState);
+    });
+
 
 
 </script>

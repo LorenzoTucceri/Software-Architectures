@@ -22,4 +22,12 @@ class MicroserviceController extends Controller
         // Reindirizzamento alla pagina dopo l'aggiunta del servizio
         return back()->with('success', 'Microservice added successfully!');
     }
+
+    public function destroy($id)
+    {
+        $microservice = Microservice::findOrFail($id);
+        $microservice->delete();
+
+        return back()->with('success', 'Microservice deleted successfully');
+    }
 }

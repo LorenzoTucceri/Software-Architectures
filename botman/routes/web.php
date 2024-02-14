@@ -22,3 +22,4 @@ Route::post('/loginPost', LoginController::class)->name("loginPost");
 Route::get('/chat', HomeController::class)->name("welcome")->middleware("auth");
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/addMicroservice', [MicroserviceController::class, 'store'])->name("addMicroservice");
+Route::post('/microservices/{id}', [MicroserviceController::class, 'destroy'])->name('microservices.delete');
