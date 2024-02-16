@@ -18,7 +18,7 @@ class Microservice extends Model
      */
     protected $fillable = [
         'name',
-        'annotation',
+        'priority',
     ];
 
 }

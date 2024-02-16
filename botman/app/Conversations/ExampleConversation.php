@@ -37,4 +37,14 @@ class ExampleConversation extends Conversation
             $this->say('Bye '.$this->firstname.'!');
         });
     }
+
+
+    public function loadConversation($messages)
+    {
+        foreach ($messages as $message) {
+            $this->say($message->question);
+            $this->say($message->answer);
+        }
+
+    }
 }

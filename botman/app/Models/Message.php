@@ -17,7 +17,14 @@ class Message extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'message',
+        'question',
+        'answer',
+        'chat_id',
     ];
+
+    public function chat()
+    {
+        return $this->belongsTo(Chat::class);
+    }
 
 }

@@ -18,6 +18,7 @@ class ApiController extends Controller
     public function index()
     {
         $messaggio = Cache::get($this->cacheKey);
+        //qui devo creare la chat (se la chat ancora non esiste) e salvare il messaggio questione
 
         $data = [
             'message' =>   $messaggio,
@@ -31,6 +32,7 @@ class ApiController extends Controller
     {
         try {
             $input = $request->json()->all();
+            //qui devo aggiornare il mesaggio con la answer
 
             // Fai qualcosa con i dati ricevuti, ad esempio salvali nel database
 
@@ -38,8 +40,7 @@ class ApiController extends Controller
                 'message' => 'Dati ricevuti con successo!',
                 'data' => $input
             ];
-            $exampleConversation = new ExampleConversation();
-            $exampleConversation->getQuestion("Mammeta");
+
 
 
 
@@ -48,26 +49,6 @@ class ApiController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    public function oldChat(Request $request)
-    {
-        try {
-            $input = $request->json()->all();
 
-            // Fai qualcosa con i dati ricevuti, ad esempio salvali nel database
-
-            $response = [
-                'message' => 'Dati ricevuti con successo!',
-                'data' => $input
-            ];
-            $exampleConversation = new ExampleConversation();
-            $exampleConversation->getQuestion("Mammeta");
-
-
-
-            return response()->json($response, 201);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
 
 }

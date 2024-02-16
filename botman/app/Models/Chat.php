@@ -16,8 +16,20 @@ class Chat extends Model
      *
      * @var array<int, string>
      */
+    use HasFactory;
+
     protected $fillable = [
         'name',
+        'user_id', // Aggiungi user_id ai fillable in modo da poterlo assegnare esplicitamente
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 }

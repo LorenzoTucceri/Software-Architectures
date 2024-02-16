@@ -20,7 +20,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::match(['get', 'post'], '/botman', GlobalBotController::class);
+Route::match(['get', 'post'], '/newChat', [GlobalBotController::class, 'newChat']);
+Route::match(['get', 'post'], '/oldChat', [GlobalBotController::class, 'oldChat']);
 
 
 

@@ -2,9 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c9e81336-2bae-41ef-b50f-74bdbd2a7a87" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Http/Controllers/UserController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/auth/register.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/botman-studio-9-master.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/botman-studio-9-master.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Conversations/ExampleConversation.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Conversations/ExampleConversation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/GlobalBotController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/GlobalBotController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/HomeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LoginController.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MicroserviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MicroserviceController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Chat.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Chat.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Message.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Message.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Microservice.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Microservice.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Providers/RouteServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Providers/RouteServiceProvider.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/css/chat.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/css/chat.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/auth/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/auth/login.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/bots/chat.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/bots/chat.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -156,21 +176,23 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/lorenzotucceri/Library/Mobile Documents/com~apple~CloudDocs/Università/Magistrale/1° anno/Primo semestre/Software Architecture/Software-Architectures/botman/app/Models&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/lorenzotucceri/Library/Mobile Documents/com~apple~CloudDocs/Università/Magistrale/1° anno/Primo semestre/Software Architecture/Software-Architectures/botman/resources/views&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources/views" />
       <recent name="$PROJECT_DIR$/app/Models" />
       <recent name="$PROJECT_DIR$/app/Http/Controllers/Bot" />
       <recent name="$PROJECT_DIR$/resources/css" />
       <recent name="$PROJECT_DIR$/config/botman" />
-      <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/resources/views" />
       <recent name="$PROJECT_DIR$/app/Http/Controllers" />
     </key>
   </component>
@@ -202,6 +224,11 @@
       <workItem from="1707836800294" duration="7308000" />
       <workItem from="1707857787124" duration="217000" />
       <workItem from="1707902168989" duration="10231000" />
+      <workItem from="1707987581287" duration="8751000" />
+      <workItem from="1708008546201" duration="2361000" />
+      <workItem from="1708034384403" duration="5142000" />
+      <workItem from="1708040052058" duration="824000" />
+      <workItem from="1708074406778" duration="19251000" />
     </task>
     <servers />
   </component>

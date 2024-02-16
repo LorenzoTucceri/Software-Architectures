@@ -1,13 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Ubuntu');
 
-html,body {
-    background-color: #f0f0f0;
-    font-family: 'Ubuntu', 'Helvetica Neue', Arial, sans-serif;
-    font-size: 14px;
-    margin: 0;
-    padding: 0;
-}
-
 #messageArea {
     overflow-y: auto; /* Aggiunto overflow-y con valore auto */
     max-height: calc(100vh - 120px); /* Impostato un'altezza massima per il messageArea */
