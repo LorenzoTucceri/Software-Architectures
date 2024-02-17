@@ -1,19 +1,25 @@
 import re
+from difflib import SequenceMatcher
+
 
 class RequestProcessor:
     def __init__(self, configuration):
         self.list_ms = configuration.keys_to_include
         self.synonyms = configuration.sinonimi
 
+    def similar(self, a, b):
+        return SequenceMatcher(None, a, b).ratio()
+
     def process_request(self, request):
         tokens = []
         for word in re.findall(r'\w+|\S+', request):
             for sinonimo in self.synonyms:
-                if word.lower() in self.synonyms[sinonimo]:
-                    tokens.append(sinonimo)
-                    break
-            else:
-                tokens.append(word)
+                for single_syn in self.synonyms[sinonimo]:
+                    if self.similar(word.lower(), single_syn) >= 0.8: #in self.synonyms[sinonimo].lower()) >= 0.7:
+                        tokens.append(sinonimo)
+                        break
+                    else:
+                        tokens.append(word)
 
         return tokens
 
@@ -28,6 +34,7 @@ class RequestProcessor:
         stack = []
         case = 0
         mservices_in_tokens = self.find_matching_service(tokens)
+
         while tokens:
             token = tokens.pop(0)
 
