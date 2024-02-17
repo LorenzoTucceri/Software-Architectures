@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\GlobalBotController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\MicroserviceController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -34,5 +37,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-user', [UserController::class, 'updateUser'])->name('updateProfile');
     
 });
+
+
+Route::get('/getUserId', function () {
+    if (Auth::check()) {
+
+        $userId = Auth::user()->id;
+        return response()->json(['userId' => $userId]);
+    } else {
+        return response()->json(['error' => 'Utente non autenticato'], 401);
+    }
+});
+
+
+Route::get('/setSessionData', [GlobalBotController::class, 'setSessionData']);
+
 
 

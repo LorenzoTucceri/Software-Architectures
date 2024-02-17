@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Bot\BotController;
 use App\Models\Chat;
 use App\Models\Message;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class GlobalBotController extends BotController
 {
@@ -14,52 +16,63 @@ class GlobalBotController extends BotController
 
     }
 
-
-        public function newChat()
+    public function setSessionData(Request $request)
     {
-        $botman = $this->botman;
-
-        $botman->hears('{message}', function($botman, $message) {
-            $pythonUrl = 'http://127.0.0.1:5000/start-conversation';
-            $response = Http::post($pythonUrl, $message);
-
-            $data = $response->json();
-            $botman->reply($data['reply']);
-
-            $chat = Chat::create([
-                'user_id' => 4,
-                'name' => $message
-            ]);
-
-            Message::create([
-                'chat_id' => $chat->id,
-                'question' => $message,
-                'answer' => $data['reply']
-            ]);
-        });
-        
-        $botman->listen();
-
-
+        $userId = $request->input('userId');
+        Session::put('userId', $userId);
+        return response()->json(['success' => true]);
     }
 
-    public function oldChat()
+
+        public function newChat()
+        {
+       
+            $botman = $this->botman;
+
+            $botman->hears('{message}', function ($botman, $message) {
+
+                $pythonUrl = 'http://127.0.0.1:5000/start-conversation';
+                $response = Http::post($pythonUrl, $message);
+
+                $data = $response->json();
+                $botman->reply($data['reply']);
+
+             /*   $chat = Chat::create([
+                    'user_id' => Session::get('userId'),
+                    'name' => $message
+                ]);
+
+                Message::create([
+                    'chat_id' => $chat->id,
+                    'question' => $message,
+                    'answer' => $data['reply']
+                ]);
+             */
+
+            });
+
+
+            $botman->listen();
+        }
+
+    public function oldChat(Request $request)
     {
 
         $botman = $this->botman;
 
-        $botman->hears('{message}', function($botman, $message) {
+        $botman->hears('{message}', function($botman, $message) use($request) {
             $pythonUrl = 'http://127.0.0.1:5000/start-conversation';
             $response = Http::post($pythonUrl, $message);
 
             $data = $response->json();
             $botman->reply($data['reply']);
 
-            Message::create([
-                'chat_id' => 36,
+        /*    Message::create([
+                'chat_id' => $request->chatId,
                 'question' => $message,
                 'answer' => $data['reply']
             ]);
+        */
         });
         $botman->listen();
     }

@@ -27,3 +27,4 @@ Route::match(['get', 'post'], '/oldChat', [GlobalBotController::class, 'oldChat'
 
 Route::get('/endpoint', [ApiController::class, 'index']);
 Route::post('/endpoint_di_laravel', [ApiController::class, 'store']);
+

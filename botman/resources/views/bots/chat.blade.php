@@ -4,31 +4,57 @@
     const welcomeMessage = "{{ $welcome }}";
     let chatServer = null;
 
+
+
     @if(isset($messages))
          chatServer = "/api/oldChat";
     @else
          chatServer = "/api/newChat";
     @endif
 
-   /* fetch(chatServer, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
+    const url = chatServer === "/api/newChat" ? "/newChat" : "/oldChat";
+
+    $.ajax({
+        url: '/getUserId',
+        type: 'GET',
+        success: function(response) {
+            const userId = response.userId;
+            console.log("ID dell'utente autenticato:", userId);
+
+            let chatId = 0;
+            if (match && match[1]) {
+                chatId = parseInt(match[1]);
+                console.log("ID chat:", chatId);
+            }
+
+            $.ajax({
+                url: '/setSessionData',
+                type: 'GET',
+                data: {
+                    userId: userId,
+                    chatId: chatId
+                },
+                success: function(response) {
+                    console.log("Dati della sessione impostati con successo");
+                    // Puoi gestire ulteriormente i dati qui se necessario
+                },
+                error: function(xhr, status, error) {
+                    console.error('Errore durante la richiesta AJAX:', error);
+                }
+            });
         },
-        body: JSON.stringify({
-            url: currentUrl
-        }),
-    })
-        .then(response => response.json())
-        .then(data => {
-            alert('Richiesta inviata con successo! Risposta: ' + JSON.stringify(data));
-        })
-        .catch((error) => {
-            alert('Si è verificato un errore durante l\'invio della richiesta: ' + error.message);
-        }); */
+        error: function(xhr, status, error) {
+            console.error('Errore durante la richiesta AJAX:', error);
+        }
+    });
+
+
+
 
     // Create a new observer instance:
     const observer = new MutationObserver(function() {
+
+
         if (document.getElementById('botmanChatRoot')) {
             // You must wait until the react component is inserted on the body!
             window.BotmanInstance.chatServer = chatServer;
@@ -44,6 +70,9 @@
             disconectObserver();
         }
     });
+
+
+
 
     // Set configuration object:
     const config = { childList: true };
