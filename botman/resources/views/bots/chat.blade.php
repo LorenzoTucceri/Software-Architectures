@@ -3,11 +3,13 @@
     const match = currentUrl.match(/chat\/(\d+)/);
     const welcomeMessage = "{{ $welcome }}";
     let chatServer = null;
+    let loadChat = null
 
 
 
     @if(isset($messages))
-         chatServer = "/api/oldChat";
+        loadChat = "/api/loadChat"
+        chatServer = "/api/oldChat";
     @else
          chatServer = "/api/newChat";
     @endif
@@ -47,14 +49,25 @@
             console.error('Errore durante la richiesta AJAX:', error);
         }
     });
+    @if(isset($messages))
+    $.ajax({
+        url: loadChat, // Utilizza la variabile loadChat che hai definito in precedenza
+        type: 'GET',
+        success: function(response) {
+            console.log("Chat caricata con successo:", response);
+            // Puoi gestire ulteriormente la chat caricata qui se necessario
+        },
+        error: function(xhr, status, error) {
+            console.error('Errore durante la richiesta AJAX per caricare la chat:', error);
+        }
+    });
+    @endif
 
 
 
 
     // Create a new observer instance:
     const observer = new MutationObserver(function() {
-
-
         if (document.getElementById('botmanChatRoot')) {
             // You must wait until the react component is inserted on the body!
             window.BotmanInstance.chatServer = chatServer;
