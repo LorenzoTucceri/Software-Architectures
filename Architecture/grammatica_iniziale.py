@@ -1,4 +1,3 @@
-import subprocess
 import sys
 import ply.lex as lex
 import ply.yacc as yacc
@@ -9,20 +8,17 @@ config = Configuration()
 ms = config.t_f
 user_input = sys.stdin.read()
 
-    # Split the input into text and microservices
-#user_input = user_input.split("-")
 
-#reconstruted = None
 # token
 tokens = [
     'ONEOF',
     'SEQ',
     'AND',
     'OR',
-    'f',            # per gestire le stringhe terminali
-    'LPARENT',      # per gestire la [
-    'RPARENT',      # per gestire la ]
-    'SEMICOLON'     # per gestire ;
+    'f',  # per gestire le stringhe terminali
+    'LPARENT',  # per gestire la [
+    'RPARENT',  # per gestire la ]
+    'SEMICOLON'  # per gestire ;
 ]
 
 """
@@ -38,7 +34,7 @@ t_RPARENT = r'\]'
 t_SEMICOLON = r'\;'
 t_f = ms
 
-t_ignore = ' \t'    # per ignorare gli spazi
+t_ignore = ' \t'  # per ignorare gli spazi
 
 # regole di precedenza
 precedence = (
@@ -47,11 +43,11 @@ precedence = (
 )
 
 
-
 # per errori dei token
 def t_error(t):
     print(f"Token non riconosciuto: {t.value[0]}")
     t.lexer.skip(1)
+
 
 def add_parentheses(tokens):
     new_tokens = []
@@ -71,12 +67,14 @@ def add_parentheses(tokens):
 
     return new_tokens
 
+
 # regole parsing
 def p_start(p):
     '''
     G_user : F1
            | f
     '''
+
 
 def p_F1(p):
     '''
@@ -85,45 +83,54 @@ def p_F1(p):
        | SEQ LPARENT F3 RPARENT
     '''
 
+
 def p_F2(p):
     '''
     F2 : F2 AND F2
        | F2 OR F2
        | f
     '''
+    """
+    global reconstruted
 
-    #global reconstruted
+    if len(p) == 2:
+        p[0] = [p[1]]  # 1 elemento restituisco lista
+    else:
+        p[0] = p[1] + [p[2]] + p[3]  # concateno le liste
 
-    #if len(p) == 2:
-    #    p[0] = [p[1]]  # 1 elemento restituisco lista
-    #else:
-    #    p[0] = p[1] + [p[2]] + p[3]  # concateno le liste
+    p[0] = add_parentheses(p[0]) # aggiungo le parentesi
 
-    #p[0] = add_parentheses(p[0]) # aggiungo le parentesi
+    reconstruted = p[0]
 
-    #reconstruted = p[0]
-
+    """
 def p_F3(p):
     '''
     F3 : f SEMICOLON F3
        | f
     '''
-    #p[0] = p[1]
+    p[0] = p[1]
+
 
 # per errori parsing
 def p_error(p):
-    print(f"0") #Errore di parsing inatteso a livello di token: {p}
+    print("0")  # Errore di parsing inatteso a livello di token: {p}
 
 
 lexer = lex.lex()
 parser = yacc.yacc()
 
-#user_input = sys.argv[1]
+# user_input = sys.argv[1]
 
 result = parser.parse(user_input, lexer=lexer)
-print("1")
-    #print("Result:", result)
 
+#print("RESULT", result)
+#concatenated_string = ''.join(reconstruted)
+#print(reconstruted)
+# dal parsing poi rimuovo gli apici doppi
+#cleaned_string = concatenated_string.replace("''", "'")
+#print("reeee",user_input)
+
+print("1")
 
 """
 result = parser.parse(user_input, lexer=lexer)
@@ -145,11 +152,10 @@ print("Parsed Expression:")
 print(parsed_expression)
 """
 
+# script_path = "my_flask_app_script.py"
+# subprocess.run(["python", script_path, parsed_expression]) # result
 
-#script_path = "my_flask_app_script.py"
-#subprocess.run(["python", script_path, parsed_expression]) # result
-
-    #print(f"Errore durante il parsing: {e}")
+# print(f"Errore durante il parsing: {e}")
 
 """
 examples = [

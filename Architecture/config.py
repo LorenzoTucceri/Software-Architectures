@@ -2,48 +2,90 @@ import mysql.connector
 
 class Configuration:
     def __init__(self):
-        self.keys_to_include = ['event_booking', 'weather_checking', 'ticket_availability', 'parking_recommendation']
+        self.host = "localhost"
+        self.database_name = "MiLA4U"
+        self.database_user = "mila4u"
+        self.password = "7Cx.VWwuRn2CB5)u"
+
+        self.mydb = None
+        self.connect_to_database()
+
+        self.keys_to_include = None  # ['event_booking', 'weather_checking', 'ticket_availability', 'parking_recommendation']
+        self.get_microservices()
+
         self.keys_ = ["and", "or", "sequential", "one_of"] + self.keys_to_include
 
         self.sinonimi = {
-            'event_booking': ['reservation', 'booking', 'book a spot', 'reserve a ticket', 'event pass', 'event'],
+            'event_booking': ['reservation', 'booking', 'book a spot', 'event pass', 'event'],
             'weather_checking': ['check weather', 'weather forecast', 'weather updates', 'climate check',
-                                 'weather information', 'weather'],
+                                 'weather information', 'weather', 'rainy', 'rain', 'sunny', 'sun', 'cloudy', 'cloud', 'foggy', 'fog', 'snowy', 'snow'],
             'ticket_availability': ['ticket availability', 'ticket status', 'ticket access', 'availability check',
-                                    'available tickets'],
+                                    'available tickets', 'ticket', 'reserve a ticket'],
             'parking_recommendation': ['parking advice', 'parking suggestions', 'recommend parking', 'parking options',
-                                       'best parking', 'parking'],
-            'or': ['or', 'otherwise', 'alternatively', 'or else', 'oppositely', 'in case otherwise', 'either', 'else',
+                                       'best parking', 'parking', 'park'],
+            'or': ['or', 'otherwise', 'or else', 'oppositely', 'in case otherwise', 'either', 'else',
                    'otherwise'],
-            'and': ['and', 'also', 'in addition', 'furthermore', 'moreover', 'in conjunction with', 'based'],
-            'one_of': ['one', 'either', 'either one', 'any one', 'choose one', 'select one', 'pick one'],
+            'and': ['and', 'also', 'in addition', 'furthermore', 'moreover', 'in conjunction with', 'based', 'for', 'while'],
+            'one_of': ['one', 'either', 'either one', 'any one', 'choose one', 'select one'],
             'seq': ['if', 'sequences', 'sequence', 'ordered set', 'series', 'sequential', 'sequentially', 'succession',
-                    'chain']
+                    'chain', 'given']
         }
+
         self.f = [key for key in self.keys_to_include if key in self.sinonimi]
         self.t_f = r'\'{}\''.format(r'\' | \''.join(self.keys_to_include))
-
+        """
         self.priority_relations = {
             'ticket_availability': 1,
             'event_booking': 2,
             'weather_checking': 3,
             'parking_recommendation': 4
         }
-
-        self.mydb = None
+        """
+        self.priority_relations = None
+        self.get_priorities()
 
         self.base_url_OLLAMA = "http://localhost:11434"
         self.model_name = "llama2"
 
-        self.host = "localhost"
-        self.database_name = "MiLA4U"
-        self.database_user = "mila4u"
-        self.password = "7Cx.VWwuRn2CB5)u"
-
         self.parser_path = "Software-Architectures/Architecture/grammatica_iniziale.py"
 
-    def get_f(self):
-        return self.f
+
+    def get_microservices(self):
+        keys_to_include = []
+        cursor = self.mydb.cursor(dictionary=True)
+        try:
+            cursor = self.mydb.cursor(dictionary=True)
+            cursor.execute("SELECT name FROM microservices")
+
+            for row in cursor.fetchall():
+                keys_to_include.append(row['name'])
+
+        except mysql.connector.Error as err:
+            print(f"Errore MySQL: {err}")
+
+        finally:
+            cursor.close()
+
+        self.keys_to_include = keys_to_include
+
+    def get_priorities(self):
+        priority_relations = {}
+        cursor = self.mydb.cursor(dictionary=True)
+        try:
+            #scursor = self.mydb.cursor(dictionary=True)
+            cursor.execute("SELECT name, priority FROM microservices")
+
+            for row in cursor.fetchall():
+                priority_relations[row['name']] = row['priority']
+
+        except mysql.connector.Error as err:
+            print(f"Errore MySQL: {err}")
+
+        finally:
+
+            cursor.close()
+                #self.mydb.close()
+        self.priority_relations = priority_relations
 
     def connect_to_database(self):
         try:

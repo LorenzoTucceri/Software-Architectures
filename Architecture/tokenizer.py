@@ -1,26 +1,30 @@
-import re
-from difflib import SequenceMatcher
+# import re
+import nltk
 
 
 class RequestProcessor:
     def __init__(self, configuration):
         self.list_ms = configuration.keys_to_include
         self.synonyms = configuration.sinonimi
-
+        self.succ = None
+    """
     def similar(self, a, b):
         return SequenceMatcher(None, a, b).ratio()
+    """
 
     def process_request(self, request):
         tokens = []
-        for word in re.findall(r'\w+|\S+', request):
-            for sinonimo in self.synonyms:
-                for single_syn in self.synonyms[sinonimo]:
-                    if self.similar(word.lower(), single_syn) >= 0.8: #in self.synonyms[sinonimo].lower()) >= 0.7:
-                        tokens.append(sinonimo)
-                        break
-                    else:
-                        tokens.append(word)
 
+        for word in nltk.word_tokenize(request):  # re.findall(r'\w+|\S+', request):
+            for sinonimo in self.synonyms:
+                if word.lower() in self.synonyms[sinonimo]:
+                    tokens.append(sinonimo)
+                    break
+            else:
+                tokens.append(word)
+        print("ttt",tokens)
+        self.check_special_chars(tokens)
+        print("alalalal", self.succ)
         return tokens
 
     def find_matching_service(self, tokens):
@@ -28,7 +32,22 @@ class RequestProcessor:
         for token in tokens:
             if token in self.list_ms:
                 finded.append(token)
+
         return finded
+
+    def check_special_chars(self, lista):
+        lunghezza_lista = len(lista)
+        caratteri_speciali = ['seq', 'one_of']  # Sostituisci con i tuoi caratteri speciali
+
+        for i in range(lunghezza_lista - 1):
+            elemento_corrente = lista[i]
+            elemento_successivo = lista[i + 1]
+
+            if elemento_corrente in caratteri_speciali or elemento_successivo in caratteri_speciali:
+                self.succ = True
+                return
+
+        self.succ = False
 
     def reconstruct_sentence(self, tokens):
         stack = []
@@ -37,7 +56,7 @@ class RequestProcessor:
 
         while tokens:
             token = tokens.pop(0)
-
+            print("lllll",len(mservices_in_tokens) == 1 and token == mservices_in_tokens[0])
             if len(mservices_in_tokens) == 1 and token == mservices_in_tokens[0] and (case == 1 or case == 0):
                 options = []
                 case = 1
@@ -59,27 +78,15 @@ class RequestProcessor:
 
             else:
                 options = []
-                while tokens:
-                    if tokens[0] in self.list_ms or tokens[0] in {"and", "or"}:
-                        if tokens[0] in self.list_ms:
-                            options.append("'" + tokens.pop(0) + "'")
+                if self.succ is False:
+                    while tokens:
+                        if tokens[0] in self.list_ms or tokens[0] in {"and", "or"}:
+                            if tokens[0] in self.list_ms:
+                                options.append("'" + tokens.pop(0) + "'")
+                            else:
+                                options.append(tokens.pop(0))
                         else:
-                            options.append(tokens.pop(0))
-                    else:
-                        tokens.pop(0)
-                stack.append(f"[{''.join(options)}]")
-
+                            tokens.pop(0)
+                    stack.append(f"[{''.join(options)}]")
+        print("stack" , stack)
         return stack[0]
-
-# Esempio di utilizzo della classe RequestProcessor
-"""
-if __name__ == "__main__":
-    processor = RequestProcessor()
-
-    request = "Check the weather and book a spot"
-    tokens = processor.process_request(request)
-    reconstructed_sentence = processor.reconstruct_sentence(tokens)
-
-    print(f"Original Request: {request}")
-    print(f"Reconstructed Sentence: {reconstructed_sentence}")
-"""

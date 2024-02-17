@@ -1,7 +1,7 @@
 import subprocess
 import sys
 
-from langchain import LLMChain
+import langchain.chains as chains
 #from langchain.callbacks.manager import CallbackManager
 #from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 import warnings
@@ -36,7 +36,7 @@ class MiLA4UAssistant:
             ]
         )
 
-        self.conversation = LLMChain(
+        self.conversation = chains.LLMChain(
             prompt=self.prompt,
             llm=self.llm,
             verbose=0,
