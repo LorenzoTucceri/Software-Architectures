@@ -124,8 +124,8 @@ parser = yacc.yacc()
 result = parser.parse(user_input, lexer=lexer)
 
 #print("RESULT", result)
-#concatenated_string = ''.join(reconstruted)
-#print(reconstruted)
+#concatenated_string = ''.join(str(reconstruted))
+# print(reconstruted)
 # dal parsing poi rimuovo gli apici doppi
 #cleaned_string = concatenated_string.replace("''", "'")
 #print("reeee",user_input)

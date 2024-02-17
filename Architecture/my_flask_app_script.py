@@ -12,7 +12,6 @@ app = Flask(__name__)
 config = Configuration()
 tokenizer = RequestProcessor(config)
 assistant = MiLA4UAssistant(config)
-priority = Priority()
 
 def tokenize_text(text):
     return tokenizer.reconstruct_sentence(tokenizer.process_request(text))
@@ -26,9 +25,12 @@ def parsing_text(text):
 
     return output, error
 
+
 # https://stackoverflow.com/questions/77550506/what-is-the-right-way-to-do-system-prompting-with-ollama-in-langchain-using-pyth
 @app.route('/start-conversation', methods=['POST'])
 def start_conversation():
+    priority = Priority(config)
+
     data = request.json
     data = tokenize_text(data)
 
@@ -38,12 +40,14 @@ def start_conversation():
         stdout = "modello" #+ pa
         #stdout = assistant.respond(data)
     else:
-        #parsed_expression = priority.parse_expression(data)
-        #priority_map = priority.parse_priority_expression(parsed_expression)
+        priority_map = priority.parse_priority_expression(data)
 
-        #print("Parsed Map:")
+        print("Parsed Map:")
         #print(priority_map)
+        for service, priority in priority_map:
+            config.table += f"\n{service:<30}{priority:<10}"
 
+        print(config.table + '\n')
         stdout = "GUser :== " + data
 
     print(f'Response from Python: {stdout}')  # Aggiungi questa linea per debug

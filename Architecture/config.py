@@ -49,6 +49,7 @@ class Configuration:
 
         self.parser_path = "Software-Architectures/Architecture/grammatica_iniziale.py"
 
+        self.table = f"{'Service':<30}{'Priority':<10}\n{'-' * 40}"
 
     def get_microservices(self):
         keys_to_include = []
@@ -76,7 +77,7 @@ class Configuration:
             cursor.execute("SELECT name, priority FROM microservices")
 
             for row in cursor.fetchall():
-                priority_relations[row['name']] = row['priority']
+                priority_relations[row['name']] = int(row['priority'])
 
         except mysql.connector.Error as err:
             print(f"Errore MySQL: {err}")

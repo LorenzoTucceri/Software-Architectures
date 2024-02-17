@@ -7,6 +7,7 @@ class RequestProcessor:
         self.list_ms = configuration.keys_to_include
         self.synonyms = configuration.sinonimi
         self.succ = None
+
     """
     def similar(self, a, b):
         return SequenceMatcher(None, a, b).ratio()
@@ -22,9 +23,8 @@ class RequestProcessor:
                     break
             else:
                 tokens.append(word)
-        print("ttt",tokens)
+        # print("tokens",tokens)
         self.check_special_chars(tokens)
-        print("alalalal", self.succ)
         return tokens
 
     def find_matching_service(self, tokens):
@@ -56,7 +56,7 @@ class RequestProcessor:
 
         while tokens:
             token = tokens.pop(0)
-            print("lllll",len(mservices_in_tokens) == 1 and token == mservices_in_tokens[0])
+
             if len(mservices_in_tokens) == 1 and token == mservices_in_tokens[0] and (case == 1 or case == 0):
                 options = []
                 case = 1
@@ -88,5 +88,5 @@ class RequestProcessor:
                         else:
                             tokens.pop(0)
                     stack.append(f"[{''.join(options)}]")
-        print("stack" , stack)
+        # print("stack", stack)
         return stack[0]
