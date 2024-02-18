@@ -2,6 +2,10 @@ import mysql.connector
 
 class Configuration:
     def __init__(self):
+        """
+            Initializes a Configuration object with details for connecting to the database,
+            keys to include, synonyms, priorities of relationships between microservices, and other configurations.
+        """
         self.host = "localhost"
         self.database_name = "MiLA4U"
         self.database_user = "mila4u"
@@ -52,6 +56,9 @@ class Configuration:
         self.table = f"{'Service':<30}{'Priority':<10}\n{'-' * 40}"
 
     def get_microservices(self):
+        """
+            Retrieves keys to include from microservices in the database and assigns them to self.keys_to_include.
+        """
         keys_to_include = []
         cursor = self.mydb.cursor(dictionary=True)
         try:
@@ -70,6 +77,9 @@ class Configuration:
         self.keys_to_include = keys_to_include
 
     def get_priorities(self):
+        """
+            Retrieves keys to include from microservices in the database and assigns them to self.keys_to_include.
+        """
         priority_relations = {}
         cursor = self.mydb.cursor(dictionary=True)
         try:
@@ -89,6 +99,9 @@ class Configuration:
         self.priority_relations = priority_relations
 
     def connect_to_database(self):
+        """
+            Connects to the MySQL database using the details provided during object initialization.
+        """
         try:
             self.mydb = mysql.connector.connect(
                 host=self.host,
@@ -100,21 +113,23 @@ class Configuration:
             print("Unable to connect to the database")
 
     def update_keys(self, new_service, new_synonyms):
+        """
+            Updates keys and synonyms with a new service, if the new service is not already included.
+
+            :param new_service: New service to add to the keys.
+            :param new_synonyms: New synonyms associated with the service.
+        """
         if new_service not in self.keys_to_include:
             self.keys_to_include.append(new_service)
             self.sinonimi[new_service] = new_synonyms
 
     def initialize_priority_table(self):
+        """
+            Initializes a priority table for printing based on the priorities of relationships between microservices.
+
+            :return: String containing the formatted priority table.
+        """
         table = f"{'Service':<30}{'Priority':<10}\n{'-' * 40}"
         for service, priority in self.priority_relations.items():
             table += f"\n{service:<30}{priority:<10}"
         return table
-
-
-"""
-config = Configuration()
-config.connect_to_database("localhost", "MiLA4U", "mila4u", "7Cx.VWwmuRn2CB5)u")
-config.update_keys("new_service", ["new", "service", "additional"])
-priority_table = config.initialize_priority_table()
-print(priority_table)
-"""

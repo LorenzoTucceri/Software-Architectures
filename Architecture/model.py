@@ -1,9 +1,4 @@
-import subprocess
-import sys
-
 import langchain.chains as chains
-#from langchain.callbacks.manager import CallbackManager
-#from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 import warnings
 warnings.filterwarnings("ignore")
 from langchain.llms import Ollama
@@ -14,6 +9,12 @@ from langchain.prompts import (
 )
 
 class MiLA4UAssistant:
+    """
+        Initializes a MiLA4UAssistant object with the specified configuration and optional system template.
+
+        :param configuration: Configuration object containing relevant information.
+        :param system_template: Optional system template for MiLA4UAssistant.
+    """
     def __init__(self, configuration, system_template=None):
         self.template = system_template or (
             "You operate as MiLA4U, a virtual assistant specialized in the context of the NdR Street Science Fair, "
@@ -43,14 +44,10 @@ class MiLA4UAssistant:
         )
 
     def respond(self, user_input):
+        """
+            Generates a response based on the user input using the MiLA4UAssistant's conversation chain.
+
+            :param user_input: User input to generate a response.
+            :return: Generated response.
+        """
         return self.conversation.run(user_input)
-
-"""
-if __name__ == "__main__":
-    assistant = MiLA4UAssistant()
-    user_input = "Hello, what services do you provide?"
-    response = assistant.respond(user_input)
-    print(response)
-"""
-
-

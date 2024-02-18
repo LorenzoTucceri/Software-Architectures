@@ -4,6 +4,11 @@ import nltk
 
 class RequestProcessor:
     def __init__(self, configuration):
+        """
+            Initializes a RequestProcessor object with the keys to include, synonyms, and a variable for succession.
+
+            :param configuration: Configuration object containing relevant information.
+        """
         self.list_ms = configuration.keys_to_include
         self.synonyms = configuration.sinonimi
         self.succ = None
@@ -14,6 +19,12 @@ class RequestProcessor:
     """
 
     def process_request(self, request):
+        """
+            Processes a user request, tokenizing it and replacing words with their synonyms if available.
+
+            :param request: User request to process.
+            :return: List of processed tokens.
+        """
         tokens = []
 
         for word in nltk.word_tokenize(request):  # re.findall(r'\w+|\S+', request):
@@ -28,6 +39,12 @@ class RequestProcessor:
         return tokens
 
     def find_matching_service(self, tokens):
+        """
+            Finds microservices that match tokens.
+
+            :param tokens: List of tokens to search for microservices.
+            :return: List of matching microservices.
+        """
         finded = []
         for token in tokens:
             if token in self.list_ms:
@@ -36,6 +53,11 @@ class RequestProcessor:
         return finded
 
     def check_special_chars(self, lista):
+        """
+            Checks for special characters in the token list and sets the 'succ' variable accordingly.
+
+            :param lista: List of tokens.
+        """
         lunghezza_lista = len(lista)
         caratteri_speciali = ['seq', 'one_of']  # Sostituisci con i tuoi caratteri speciali
 
@@ -50,6 +72,12 @@ class RequestProcessor:
         self.succ = False
 
     def reconstruct_sentence(self, tokens):
+        """
+            Reconstructs a sentence based on the given tokens.
+
+            :param tokens: List of tokens.
+            :return: Reconstructed sentence.
+        """
         stack = []
         case = 0
         mservices_in_tokens = self.find_matching_service(tokens)
